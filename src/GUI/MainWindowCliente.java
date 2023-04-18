@@ -32,6 +32,7 @@ public class MainWindowCliente extends JPanel {
                     try {
                         ip = InetAddress.getLocalHost();
                         cliente = new Cliente(new Usuario(id, ip, GeneradorPuertos.nuevoPuerto()));
+                        cliente.conectar();
                     } catch (UnknownHostException ex) {
                         ex.printStackTrace();
                     }

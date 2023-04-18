@@ -15,7 +15,7 @@ public class Servidor {
     private InetAddress ip;
     private static final int puerto = 8080;
     private Set<Usuario> conectados;
-    private Map<String, Usuario> quienTiene;
+    private Map<String, ArrayList<Usuario>> quienTiene;
     private ArrayList<Thread> hilos;
 
     public Servidor(InetAddress ip) throws IOException {
@@ -31,7 +31,7 @@ public class Servidor {
         start(puerto);
     }
 
-    private void start(int puerto) throws IOException {
+    public void start(int puerto) throws IOException {
         Socket cliente;
         while(true){
             cliente = serverSocket.accept();
@@ -39,7 +39,15 @@ public class Servidor {
             hilos.add(oy);
             oy.start();
         }
+    }
 
+    public void anadirUsuario(Usuario usuario){
+        conectados.add(usuario);
+        for(String archivo : usuario.getInfo())
+            quienTiene.get(archivo).add(usuario);
+    }
 
+    public static int getPuerto() {
+        return puerto;
     }
 }

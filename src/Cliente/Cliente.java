@@ -1,5 +1,6 @@
 package Cliente;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
@@ -17,10 +18,20 @@ public class Cliente {
         this.usuario = usuario;
         try {
             server = new ServerSocket(usuario.getPuerto());
-            this.socket = new Socket("localhost", Servidor.getPuerto());
+            this.socket = null;
+            in = null;
+            out = null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void conectar() {
+        try {
+            socket = new Socket("localhost", Servidor.getPuerto());
             in = socket.getInputStream();
             out = socket.getOutputStream();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
