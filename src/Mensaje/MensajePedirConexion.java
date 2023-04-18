@@ -2,8 +2,8 @@ package Mensaje;
 
 public class MensajePedirConexion extends Mensaje{
     @Override
-    public int getTipo() {
-        return 0;
+    public String getTipo() {
+        return "PedirConexion";
     }
 
     @Override

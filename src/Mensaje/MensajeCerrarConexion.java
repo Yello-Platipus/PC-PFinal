@@ -2,8 +2,8 @@ package Mensaje;
 
 public class MensajeCerrarConexion extends Mensaje{
     @Override
-    public int getTipo() {
-        return 0;
+    public String getTipo() {
+        return "CerrarConexion";
     }
 
     @Override

@@ -1,7 +1,13 @@
 package Mensaje;
 
 public abstract class Mensaje {
-    public abstract int getTipo();
-    public abstract String getOrigen();
-    public abstract String getDestino();
+    public abstract String getTipo();
+
+    public String getOrigen() {
+        return null;
+    }
+
+    public String getDestino() {
+        return null;
+    }
 }

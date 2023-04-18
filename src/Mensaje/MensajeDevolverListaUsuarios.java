@@ -2,8 +2,8 @@ package Mensaje;
 
 public class MensajeDevolverListaUsuarios extends Mensaje{
     @Override
-    public int getTipo() {
-        return 0;
+    public String getTipo() {
+        return "DevolverListaUsuarios";
     }
 
     @Override

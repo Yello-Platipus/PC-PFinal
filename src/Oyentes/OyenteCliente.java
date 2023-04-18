@@ -1,15 +1,16 @@
 package Oyentes;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import Mensaje.*;
+import Servidor.Servidor;
+
+import java.io.*;
 import java.net.Socket;
 
 public class OyenteCliente extends Thread{
     InputStream is;
     OutputStream os;
 
-    public OyenteCliente(Socket clienteSo) {
+    public OyenteCliente(Socket clienteSo, Servidor server) {
 
         try {
             is = clienteSo.getInputStream();
@@ -19,7 +20,28 @@ public class OyenteCliente extends Thread{
             e.printStackTrace();
         }
     }
+
     public void run(){
+        try {
+            ObjectInputStream in = new ObjectInputStream(is);
+            ObjectOutputStream out = new ObjectOutputStream(os);
+
+            Mensaje men = (Mensaje) in.readObject();
+            if(men.getTipo().equals("PedirConexion")){
+                out.writeObject(new MensajeOK());
+
+
+            }
+            else{
+                //TODO Mensaje de error por GUI
+            }
+        }
+        catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
     }
+
+
+
 }
