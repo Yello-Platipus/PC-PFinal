@@ -19,7 +19,6 @@ public class OyenteCliente extends Thread{
             e.printStackTrace();
         }
     }
-
     public void run(){
 
     }
