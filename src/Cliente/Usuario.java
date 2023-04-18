@@ -25,14 +25,12 @@ public class Usuario {
         this.puerto = puerto;
         info = new HashSet<>();
         File carpeta = new File(ruta + id);
-        if (!carpeta.exists()) {
+        if (!carpeta.exists())
             carpeta.mkdir();
-        }
-        for (File archivo : carpeta.listFiles()) {
-            if (archivo.isFile()) {
-                info.add(archivo.getName());
-            }
-        }
+        else
+            for (File archivo : carpeta.listFiles())
+                if (archivo.isFile())
+                    info.add(archivo.getName());
     }
 
 

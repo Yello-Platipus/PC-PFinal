@@ -1,10 +1,14 @@
 package GUI;
 
+import Cliente.Cliente;
 import Cliente.Usuario;
+import Util.GeneradorPuertos;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class MainWindowCliente extends JPanel {
 
@@ -24,7 +28,13 @@ public class MainWindowCliente extends JPanel {
                 if (id.equals("")) {
                     JOptionPane.showMessageDialog(null, "Debe introducir un nombre de usuario");
                 } else {
-                    cliente = new Cliente(new Usuario(id));
+                    InetAddress ip = null;
+                    try {
+                        ip = InetAddress.getLocalHost();
+                        cliente = new Cliente(new Usuario(id, ip, GeneradorPuertos.nuevoPuerto()));
+                    } catch (UnknownHostException ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
         });
