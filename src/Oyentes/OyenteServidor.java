@@ -7,6 +7,8 @@ import javafx.util.Pair;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Set;
 
 public class OyenteServidor extends Thread {
     InputStream is;
@@ -51,12 +53,35 @@ public class OyenteServidor extends Thread {
 
     }
 
-    public void pedirListaUsuarios(){
+    public ArrayList<String> pedirListaUsuarios(){
         try {
+            ObjectInputStream in = new ObjectInputStream(is);
             ObjectOutputStream out = new ObjectOutputStream(os);
             out.writeObject(new MensajePedirListaUsuarios("Cliente","Servidor"));
+            Mensaje men = (Mensaje) in.readObject();
+            if(men.getTipo().equals("DevolverListaUsuarios")){
+                MensajeDevolverListaUsuarios aux = (MensajeDevolverListaUsuarios) men;
+                return aux.getListaUsuarios();
+            }
         }
-        catch (IOException e) {
+        catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void pedirFichero(String id){
+        try {
+            ObjectInputStream in = new ObjectInputStream(is);
+            ObjectOutputStream out = new ObjectOutputStream(os);
+            out.writeObject(new MensajePedirFichero("Cliente", "Servidor", id));
+            Mensaje men = (Mensaje) in.readObject();
+            if (men.getTipo().equals("DevolverListaUsuarios")) {
+                MensajeDevolverCliente aux = (MensajeDevolverCliente) men;
+
+            }
+        }
+        catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
