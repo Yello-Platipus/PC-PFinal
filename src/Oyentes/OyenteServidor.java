@@ -31,7 +31,7 @@ public class OyenteServidor extends Thread {
             ObjectInputStream in = new ObjectInputStream(is);
             ObjectOutputStream out = new ObjectOutputStream(os);
 
-            out.writeObject(new MensajePedirConexion("Cliente","Servidor",client.getNombre(),client.getIp(),client.getPuerto(),client.getFicheros());
+            out.writeObject(new MensajePedirConexion("Cliente","Servidor",client.getId(),client.getInfo()));
 
             Mensaje men = (Mensaje) in.readObject();
 

@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Set;
 
 import Oyentes.OyenteCliente;
 import Oyentes.OyenteServidor;
@@ -35,5 +36,12 @@ public class Cliente {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public String getId(){
+        return usuario.getId();
+    }
+
+    public Set<String> getInfo(){
+        return usuario.getInfo();
     }
 }

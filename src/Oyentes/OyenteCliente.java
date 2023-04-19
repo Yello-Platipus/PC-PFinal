@@ -32,7 +32,7 @@ public class OyenteCliente extends Thread{
 
             if(men.getTipo().equals("PedirConexion")){
                 MensajePedirConexion aux = (MensajePedirConexion) men;
-                se.anadirUsuario(aux.getId(),aux.getInputStream(),aux.getOutputStream(),aux.getInfo());
+                se.anadirUsuario(aux.getId(),in,out,aux.getInfo());
                 out.writeObject(new MensajeOK(men.getDestino(),men.getOrigen()));
 
                 while(!men.getTipo().equals("CerrarConexion")){
@@ -41,7 +41,7 @@ public class OyenteCliente extends Thread{
 
                     switch (men.getTipo()){
                         case "PedirListaUsuarios"://TODO
-                            out.writeObject(new MensajeDevolverListaUsuarios(men.getDestino(),men.getOrigen()));
+                            out.writeObject(new MensajeDevolverListaUsuarios(men.getDestino(),men.getOrigen(),se.getInfo()));
                             break;
                         case "PedirFichero":
                             MensajePedirFichero aux1 = (MensajePedirFichero) men;
@@ -50,6 +50,7 @@ public class OyenteCliente extends Thread{
                                 par = se.getUsuario(aux1.getFichero());//1- Buscar al cliente con lo que pide el cliente 1
                             }
                             catch (RuntimeException e){
+                                e.printStackTrace();
                                 break;
                             }
                             ObjectInputStream inCliente2 = new ObjectInputStream(par.getKey());//2- Con el in y el out de ese cliente 2 encontrado

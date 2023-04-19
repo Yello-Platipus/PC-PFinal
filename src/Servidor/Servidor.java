@@ -60,7 +60,6 @@ public class Servidor {
     }
 
     public synchronized Pair<InputStream, OutputStream> getUsuario(String fichero) throws RuntimeException{
-        // TODO Excepcion
         ArrayList<String> idUsuarios = quienTiene.get(fichero);
         if(idUsuarios.size() == 0)
             throw new RuntimeException("No hay usuarios que tengan el archivo");

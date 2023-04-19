@@ -1,10 +1,12 @@
 package Mensaje;
 
+import java.util.ArrayList;
+
 public class MensajeDevolverListaUsuarios extends Mensaje{
-
-    public MensajeDevolverListaUsuarios(String origen, String destino) {
+    ArrayList<String> listaUsuarios;
+    public MensajeDevolverListaUsuarios(String origen, String destino, ArrayList<String> listaUsuarios) {
         super(origen, destino);
-
+        this.listaUsuarios = listaUsuarios;
     }
     @Override
     public String getTipo() {
@@ -19,5 +21,9 @@ public class MensajeDevolverListaUsuarios extends Mensaje{
     @Override
     public String getDestino() {
         return null;
+    }
+
+    public ArrayList<String> getListaUsuarios(){
+        return listaUsuarios;
     }
 }

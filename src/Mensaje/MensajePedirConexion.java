@@ -5,16 +5,12 @@ import java.io.OutputStream;
 import java.util.Set;
 
 public class MensajePedirConexion extends Mensaje{
-    InputStream is;
-    OutputStream os;
     String id;
     Set<String> info;
-    public MensajePedirConexion(String origen, String destino, String id, Set<String> info, InputStream is, OutputStream os) {
+    public MensajePedirConexion(String origen, String destino, String id, Set<String> info) {
         super(origen, destino);
         this.id = id;
         this.info = info;
-        this.is = is;
-        this.os = os;
     }
     @Override
     public String getTipo() {
@@ -39,11 +35,5 @@ public class MensajePedirConexion extends Mensaje{
         return info;
     }
 
-    public InputStream getInputStream(){
-        return is;
-    }
 
-    public OutputStream getOutputStream(){
-        return os;
-    }
 }
