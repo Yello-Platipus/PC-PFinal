@@ -1,6 +1,10 @@
 package Mensaje;
 
 public class MensajeOK extends Mensaje{
+
+    public MensajeOK(String origen, String destino) {
+        super(origen, destino);
+    }
     @Override
     public String getTipo() {
         return "OK";

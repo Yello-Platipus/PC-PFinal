@@ -1,6 +1,11 @@
 package Mensaje;
 
 public class MensajePedirFichero extends Mensaje{
+    String fichero;
+    public MensajePedirFichero(String origen, String destino,String fichero) {
+        super(origen, destino);
+        this.fichero = fichero;
+    }
     @Override
     public String getTipo() {
         return "PedirFichero";
@@ -14,5 +19,9 @@ public class MensajePedirFichero extends Mensaje{
     @Override
     public String getDestino() {
         return null;
+    }
+
+    public String getFichero(){
+        return fichero;
     }
 }

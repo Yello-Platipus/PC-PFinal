@@ -1,9 +1,15 @@
 package Mensaje;
 
-public class MensajeConexion extends Mensaje{
+import java.net.ServerSocket;
+
+public class MensajePedirSocket extends Mensaje{
+
+    public MensajePedirSocket (String origen, String destino){
+        super(origen, destino);
+    }
     @Override
     public String getTipo() {
-        return "Conexion";
+        return "DevolverSocket";
     }
 
     @Override

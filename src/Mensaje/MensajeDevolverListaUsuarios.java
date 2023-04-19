@@ -1,6 +1,11 @@
 package Mensaje;
 
 public class MensajeDevolverListaUsuarios extends Mensaje{
+
+    public MensajeDevolverListaUsuarios(String origen, String destino) {
+        super(origen, destino);
+
+    }
     @Override
     public String getTipo() {
         return "DevolverListaUsuarios";

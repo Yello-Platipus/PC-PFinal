@@ -12,7 +12,6 @@ import Servidor.Servidor;
 
 public class Cliente {
     private Usuario usuario;
-    private ServerSocket server;
     private Socket socket;
     private InputStream in;
     private OutputStream out;
@@ -20,7 +19,6 @@ public class Cliente {
     public Cliente(Usuario usuario) {
         this.usuario = usuario;
         try {
-            server = new ServerSocket(usuario.getPuerto());
             this.socket = null;
             in = null;
             out = null;
@@ -31,7 +29,7 @@ public class Cliente {
 
     public void conectar() {
         try {
-            socket = new Socket("localhost", Servidor.getPuerto());
+            socket = new Socket(Servidor.Host, Servidor.getPuerto());
             new OyenteServidor(socket, this).start();
 
         } catch (IOException e) {

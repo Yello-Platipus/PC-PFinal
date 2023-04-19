@@ -1,13 +1,21 @@
 package Mensaje;
 
-public abstract class Mensaje {
+import java.io.Serializable;
+
+public abstract class Mensaje implements Serializable {
+    String idOrigen;
+    String idDestino;
+    public Mensaje(String origen, String destino) {
+        idOrigen = origen;
+        idDestino = destino;
+    }
     public abstract String getTipo();
 
     public String getOrigen() {
-        return null;
+        return idOrigen;
     }
 
     public String getDestino() {
-        return null;
+        return idDestino;
     }
 }

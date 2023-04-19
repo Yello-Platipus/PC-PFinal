@@ -2,8 +2,11 @@ package Servidor;
 
 import Cliente.Usuario;
 import Oyentes.OyenteCliente;
+import javafx.util.Pair;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -13,8 +16,9 @@ import java.util.*;
 public class Servidor {
     private ServerSocket serverSocket;
     private static final int puerto = 8080;
-    private Set<Usuario> conectados;
-    private Map<String, ArrayList<Usuario>> quienTiene;
+    public static final String Host = "localhost";
+    private Map<String, Pair<InputStream, OutputStream>> entradaSalidaUsers;
+    private Map<String, ArrayList<String>> quienTiene;
 
     public Servidor() throws IOException {
         try {
@@ -22,7 +26,7 @@ public class Servidor {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        conectados = new HashSet<>();
+        entradaSalidaUsers = new HashMap<>();
         quienTiene = new HashMap<>();
         start(puerto);
     }
@@ -39,29 +43,29 @@ public class Servidor {
         serverSocket.close();
     }
 
-    public synchronized void anadirUsuario(Usuario usuario){
-        conectados.add(usuario);
-        for(String archivo : usuario.getInfo())
-            quienTiene.get(archivo).add(usuario);
+    public synchronized void anadirUsuario(String id, InputStream entrada, OutputStream salida,Set<String> elems){
+        entradaSalidaUsers.put(id, new Pair<>(entrada, salida));
+        for(String archivo : elems)
+            quienTiene.get(archivo).add(id);
     }
 
-    public synchronized void eliminarUsuario(Usuario usuario){
-        conectados.remove(usuario);
-        for(String archivo : usuario.getInfo())
-            quienTiene.get(archivo).remove(usuario);
+    public synchronized void eliminarUsuario(String id,Set<String> elems){
+        entradaSalidaUsers.remove(id);
+        for(String archivo : elems)
+            quienTiene.get(archivo).remove(id);
     }
 
     public synchronized ArrayList<String> getInfo(){
         return new ArrayList<>(quienTiene.keySet());
     }
 
-    public synchronized Usuario getUsuario(String info){
-        // TODO puede que haya que devolver un Socket/ServerSocket en vez de un Usuario
-        ArrayList<Usuario> usuarios = quienTiene.get(info);
-        if(usuarios.size() == 0)
-            return null;
+    public synchronized Pair<InputStream, OutputStream> getUsuario(String fichero) throws RuntimeException{
+        // TODO Excepcion
+        ArrayList<String> idUsuarios = quienTiene.get(fichero);
+        if(idUsuarios.size() == 0)
+            throw new RuntimeException("No hay usuarios que tengan el archivo");
         else
-            return usuarios.get(0);
+            return entradaSalidaUsers.get(idUsuarios.get(0));
     }
 
     public static int getPuerto() {
