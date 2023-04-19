@@ -8,7 +8,7 @@ import java.util.Set;
 public class Usuario {
     private final static String ruta = "../../data/";
     private String id;
-    private InetAddress ip;
+    private static InetAddress ip;
     private int puerto;
     private Set<String> info;
 

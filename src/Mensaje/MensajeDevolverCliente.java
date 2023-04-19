@@ -1,11 +1,14 @@
 package Mensaje;
 
+import sun.security.x509.IPAddressName;
+
+import java.net.InetAddress;
 import java.net.ServerSocket;
 
 public class MensajeDevolverCliente extends Mensaje{//TODO cambiar
-    String ip;
+    InetAddress ip;
     int puerto;
-    public MensajeDevolverCliente(String origen, String destino, String ip, int puerto) {
+    public MensajeDevolverCliente(String origen, String destino, InetAddress ip, int puerto) {
         super(origen, destino);
         this.ip = ip;
         this.puerto = puerto;
@@ -25,7 +28,7 @@ public class MensajeDevolverCliente extends Mensaje{//TODO cambiar
         return null;
     }
 
-    public String getIp(){
+    public InetAddress getIp(){
         return ip;
     }
 

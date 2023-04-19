@@ -3,9 +3,12 @@ package Oyentes;
 
 import Mensaje.*;
 import Cliente.Cliente;
+import Util.GeneradorPuertos;
 import javafx.util.Pair;
 
 import java.io.*;
+import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -47,9 +50,15 @@ public class OyenteServidor extends Thread {
                             MensajeDevolverListaUsuarios aux = (MensajeDevolverListaUsuarios) men;
                             cliente.setFicherosExternos(aux.getListaUsuarios());
                             break;
+                        case "DevolverCliente":
+                            MensajeDevolverCliente aux3 = (MensajeDevolverCliente) men;
+                            int puerto = aux3.getPuerto();
+                            InetAddress ip = aux3.getIp();
+                            //TODO Crear un socket con el puerto y la ip que nos ha pasado el servidor
                         case "PedirCliente":
                             MensajePedirCliente aux2 = (MensajePedirCliente) men;
-
+                            ServerSocket s = new ServerSocket(GeneradorPuertos.nuevoPuerto());
+                            //TODO Enviar el puerto al servidor para que se lo pase al cliente 1
                             break;
                         default://TODO MENSAJE ERROR?
                             System.out.println("Mensaje no reconocido");
