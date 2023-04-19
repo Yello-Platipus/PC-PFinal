@@ -12,7 +12,7 @@ public class MensajeDevolverCliente extends Mensaje{//TODO cambiar
     }
     @Override
     public String getTipo() {
-        return "DevolverSocket";
+        return "DevolverCliente";
     }
 
     @Override
