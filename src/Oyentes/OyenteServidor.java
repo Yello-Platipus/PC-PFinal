@@ -3,9 +3,11 @@ package Oyentes;
 
 import Mensaje.*;
 import Cliente.Cliente;
+import Util.GeneradorPuertos;
 import javafx.util.Pair;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -49,8 +51,13 @@ public class OyenteServidor extends Thread {
                             break;
                         case "PedirCliente":
                             MensajePedirCliente aux2 = (MensajePedirCliente) men;
-
+                            int puerto = GeneradorPuertos.nuevoPuerto();
+                            new ClienteEmisor(cliente, puerto, aux2.getFichero()).start();
+                            out.writeObject(new MensajeDevolverCliente(aux2.getDestino(),aux2.getOrigen(), cliente.getIp(), puerto, aux2.getFichero()));
                             break;
+                        case "DevolverCliente":
+                            MensajeDevolverCliente auxDevCli = (MensajeDevolverCliente) men;
+                            new ClienteReceptor(cliente, auxDevCli.getIp(), auxDevCli.getPuerto(), auxDevCli.getFichero()).start();
                         default://TODO MENSAJE ERROR?
                             System.out.println("Mensaje no reconocido");
                     }

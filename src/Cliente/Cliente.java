@@ -37,7 +37,7 @@ public class Cliente {
     public void conectar() {
         try {
             socket = new Socket(Servidor.Host, Servidor.getPuerto());
-            new OyenteServidor(socket, this);
+            conexion = new OyenteServidor(socket, this);
             conexion.start();
             in = socket.getInputStream();
             out = socket.getOutputStream();
@@ -63,6 +63,6 @@ public class Cliente {
     }
 
     public String getIp(){
-        return Usuario.getIp().getHostAddress();
+        return usuario.getIp().getHostAddress();
     }
 }

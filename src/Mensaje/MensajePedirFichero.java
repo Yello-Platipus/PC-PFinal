@@ -1,7 +1,7 @@
 package Mensaje;
 
 public class MensajePedirFichero extends Mensaje{
-    String fichero;
+    private String fichero;
     public MensajePedirFichero(String origen, String destino,String fichero) {
         super(origen, destino);
         this.fichero = fichero;
