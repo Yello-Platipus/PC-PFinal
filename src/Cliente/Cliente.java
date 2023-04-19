@@ -3,11 +3,9 @@ package Cliente;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Set;
 
-import Oyentes.OyenteCliente;
 import Oyentes.OyenteServidor;
 import Servidor.Servidor;
 

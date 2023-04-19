@@ -12,12 +12,13 @@ public class OyenteServidor extends Thread {
     InputStream is;
     OutputStream os;
     boolean conectado;
-    Cliente client;
-    public OyenteServidor(Socket serverSo, Cliente client) {
+    Cliente cliente;
+
+    public OyenteServidor(Socket serverSo, Cliente cliente) {
 
         conectado = false;
         try {
-            this.client = client;
+            this.cliente = cliente;
             serverSo.setSoTimeout(0);
             is = serverSo.getInputStream();
             os = serverSo.getOutputStream();
@@ -33,7 +34,7 @@ public class OyenteServidor extends Thread {
             ObjectInputStream in = new ObjectInputStream(is);
             ObjectOutputStream out = new ObjectOutputStream(os);
 
-            out.writeObject(new MensajePedirConexion("Cliente","Servidor",client.getId(),client.getInfo()));
+            out.writeObject(new MensajePedirConexion("Cliente","Servidor",cliente.getId(),cliente.getInfo()));
 
             Mensaje men = (Mensaje) in.readObject();
 
@@ -43,12 +44,13 @@ public class OyenteServidor extends Thread {
             else{
                 System.out.println("Error al conectarse al servidor");
             }
-
+            while(true){
+                men = (Mensaje) in.readObject();
+            }
         }
         catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-
     }
 
     public void pedirListaUsuarios(){

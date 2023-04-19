@@ -7,10 +7,11 @@ import javafx.util.Pair;
 import java.io.*;
 import java.net.Socket;
 
-public class OyenteCliente extends Thread{
+public class OyenteCliente extends Thread {
     InputStream is;
     OutputStream os;
     Servidor se;
+
     public OyenteCliente(Socket clienteSo, Servidor server) {
 
         try {
