@@ -8,16 +8,13 @@ import javafx.util.Pair;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Set;
 
 public class OyenteServidor extends Thread {
     InputStream is;
     OutputStream os;
-    boolean conectado;
     Cliente client;
     public OyenteServidor(Socket serverSo, Cliente client) {
 
-        conectado = false;
         try {
             this.client = client;
             serverSo.setSoTimeout(0);
@@ -35,16 +32,31 @@ public class OyenteServidor extends Thread {
             ObjectInputStream in = new ObjectInputStream(is);
             ObjectOutputStream out = new ObjectOutputStream(os);
 
-            out.writeObject(new MensajePedirConexion("Cliente","Servidor",client.getId(),client.getInfo()));
-
             Mensaje men = (Mensaje) in.readObject();
 
             if(men.getTipo().equals("OK")){
-                conectado = true;
+
+
+                while(true){
+                    men = (Mensaje) in.readObject();
+
+                    switch (men.getTipo()){
+                        case "CerrarConexion":
+                            break;//TODO ?¿?¿?¿?
+                        case "DevolverListaUsuarios":
+                            MensajeDevolverListaUsuarios aux = (MensajeDevolverListaUsuarios) men;
+                            client.setFicherosExternos(aux.getListaUsuarios());
+                            break;
+                        case "PedirCliente":
+                            MensajePedirCliente aux2 = (MensajePedirCliente) men;
+
+                            break;
+                        default://TODO MENSAJE ERROR?
+                            System.out.println("Mensaje no reconocido");
+                    }
+                }
             }
-            else{
-                System.out.println("Error al conectarse al servidor");
-            }
+
 
         }
         catch (IOException | ClassNotFoundException e) {
@@ -53,41 +65,6 @@ public class OyenteServidor extends Thread {
 
     }
 
-    public ArrayList<String> pedirListaUsuarios(){
-        try {
-            ObjectInputStream in = new ObjectInputStream(is);
-            ObjectOutputStream out = new ObjectOutputStream(os);
-            out.writeObject(new MensajePedirListaUsuarios("Cliente","Servidor"));
-            Mensaje men = (Mensaje) in.readObject();
-            if(men.getTipo().equals("DevolverListaUsuarios")){
-                MensajeDevolverListaUsuarios aux = (MensajeDevolverListaUsuarios) men;
-                return aux.getListaUsuarios();
-            }
-        }
-        catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
-    public void pedirFichero(String id){
-        try {
-            ObjectInputStream in = new ObjectInputStream(is);
-            ObjectOutputStream out = new ObjectOutputStream(os);
-            out.writeObject(new MensajePedirFichero("Cliente", "Servidor", id));
-            Mensaje men = (Mensaje) in.readObject();
-            if (men.getTipo().equals("DevolverListaUsuarios")) {
-                MensajeDevolverCliente aux = (MensajeDevolverCliente) men;
-
-            }
-        }
-        catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public boolean conectado() {
-        return conectado;
-    }
 
 }

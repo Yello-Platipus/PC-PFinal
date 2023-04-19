@@ -7,7 +7,7 @@ public class MensajePedirCliente extends Mensaje{
     }
     @Override
     public String getTipo() {
-        return "DevolverSocket";
+        return "PedirCliente";
     }
 
     @Override
