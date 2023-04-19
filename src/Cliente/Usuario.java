@@ -38,7 +38,7 @@ public class Usuario {
     public String getId() {
         return id;
     }
-    public InetAddress getIp() {
+    public static InetAddress getIp() {
         return ip;
     }
     public int getPuerto() {

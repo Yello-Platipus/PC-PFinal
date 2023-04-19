@@ -61,4 +61,8 @@ public class Cliente {
     public void setFicherosExternos(ArrayList<String> ficheros){
         ficherosExternos = ficheros;
     }
+
+    public String getIp(){
+        return Usuario.getIp().getHostAddress();
+    }
 }

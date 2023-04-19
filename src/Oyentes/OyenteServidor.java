@@ -12,11 +12,11 @@ import java.util.ArrayList;
 public class OyenteServidor extends Thread {
     InputStream is;
     OutputStream os;
-    Cliente client;
-    public OyenteServidor(Socket serverSo, Cliente client) {
+    Cliente cliente;
+    public OyenteServidor(Socket serverSo, Cliente cliente) {
 
         try {
-            this.client = client;
+            this.cliente = cliente;
             serverSo.setSoTimeout(0);
             is = serverSo.getInputStream();
             os = serverSo.getOutputStream();
@@ -45,7 +45,7 @@ public class OyenteServidor extends Thread {
                             break;//TODO ?¿?¿?¿?
                         case "DevolverListaUsuarios":
                             MensajeDevolverListaUsuarios aux = (MensajeDevolverListaUsuarios) men;
-                            client.setFicherosExternos(aux.getListaUsuarios());
+                            cliente.setFicherosExternos(aux.getListaUsuarios());
                             break;
                         case "PedirCliente":
                             MensajePedirCliente aux2 = (MensajePedirCliente) men;
