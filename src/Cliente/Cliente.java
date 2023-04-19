@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -37,8 +38,7 @@ public class Cliente {
     public void conectar() {
         try {
             socket = new Socket(Servidor.Host, Servidor.getPuerto());
-            conexion = new OyenteServidor(socket, this);
-            conexion.start();
+            new OyenteServidor(socket, this).start();
             in = socket.getInputStream();
             out = socket.getOutputStream();
 
@@ -58,11 +58,12 @@ public class Cliente {
         objetoOut = new ObjectOutputStream(out);
         objetoOut.writeObject(new MensajePedirConexion("Cliente","Servidor",getId(),getInfo()));
     }
+
     public void setFicherosExternos(ArrayList<String> ficheros){
         ficherosExternos = ficheros;
     }
 
-    public String getIp(){
-        return usuario.getIp().getHostAddress();
+    public InetAddress getIp(){
+        return Usuario.getIp();
     }
 }
