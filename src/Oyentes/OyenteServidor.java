@@ -11,9 +11,11 @@ import java.net.Socket;
 public class OyenteServidor extends Thread {
     InputStream is;
     OutputStream os;
+    boolean conectado;
     Cliente client;
     public OyenteServidor(Socket serverSo, Cliente client) {
 
+        conectado = false;
         try {
             this.client = client;
             serverSo.setSoTimeout(0);
@@ -35,22 +37,32 @@ public class OyenteServidor extends Thread {
 
             Mensaje men = (Mensaje) in.readObject();
 
-            while(!men.getTipo().equals("OK")){
-
-                out.writeObject(new MensajePedirListaUsuarios("Cliente","Servidor"));
-                men = (Mensaje) in.readObject();
-
-
+            if(men.getTipo().equals("OK")){
+                conectado = true;
             }
-
-
-
+            else{
+                System.out.println("Error al conectarse al servidor");
+            }
 
         }
         catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
+    }
+
+    public void pedirListaUsuarios(){
+        try {
+            ObjectOutputStream out = new ObjectOutputStream(os);
+            out.writeObject(new MensajePedirListaUsuarios("Cliente","Servidor"));
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean conectado() {
+        return conectado;
     }
 
 }

@@ -1,10 +1,8 @@
 package Mensaje;
 
-import java.net.ServerSocket;
+public class MensajePedirCliente extends Mensaje{
 
-public class MensajePedirSocket extends Mensaje{
-
-    public MensajePedirSocket (String origen, String destino){
+    public MensajePedirCliente(String origen, String destino){
         super(origen, destino);
     }
     @Override

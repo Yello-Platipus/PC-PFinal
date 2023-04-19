@@ -16,6 +16,7 @@ public class Cliente {
     private Socket socket;
     private InputStream in;
     private OutputStream out;
+    private OyenteServidor conexion;
 
     public Cliente(Usuario usuario) {
         this.usuario = usuario;
@@ -31,7 +32,8 @@ public class Cliente {
     public void conectar() {
         try {
             socket = new Socket(Servidor.Host, Servidor.getPuerto());
-            new OyenteServidor(socket, this).start();
+            conexion = new OyenteServidor(socket, this);
+            conexion.start();
 
         } catch (IOException e) {
             e.printStackTrace();
