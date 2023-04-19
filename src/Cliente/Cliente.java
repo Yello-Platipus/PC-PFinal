@@ -63,7 +63,7 @@ public class Cliente {
         ficherosExternos = ficheros;
     }
 
-    public InetAddress getIp(){
-        return Usuario.getIp();
+    public String getIp(){
+        return usuario.getIp().getHostAddress();
     }
 }
