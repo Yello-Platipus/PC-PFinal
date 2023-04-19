@@ -5,6 +5,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import Oyentes.OyenteCliente;
+import Oyentes.OyenteServidor;
 import Servidor.Servidor;
 
 public class Cliente {
@@ -29,8 +32,8 @@ public class Cliente {
     public void conectar() {
         try {
             socket = new Socket("localhost", Servidor.getPuerto());
-            in = socket.getInputStream();
-            out = socket.getOutputStream();
+            new OyenteServidor(socket, this).start();
+
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -35,6 +35,9 @@ public class Servidor {
 
         }
     }
+    public void end() throws IOException {
+        serverSocket.close();
+    }
 
     public synchronized void anadirUsuario(Usuario usuario){
         conectados.add(usuario);
