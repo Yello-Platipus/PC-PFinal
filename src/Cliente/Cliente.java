@@ -45,7 +45,6 @@ public class Cliente {
             objetoOut = new ObjectOutputStream(out);
             objetoIn = new ObjectInputStream(in);
 
-
             new OyenteServidor(objetoIn,objetoOut, this).start();
             objetoOut.writeObject(new MensajePedirConexion(getId(),"Servidor",getId(),getInfo()));
             new MainWindowCliente(this);
@@ -62,12 +61,10 @@ public class Cliente {
     }
 
     public void enviarPedirLista() throws IOException {
-        objetoOut = new ObjectOutputStream(out);
         objetoOut.writeObject(new MensajePedirListaUsuarios(getId(),"Servidor"));
     }
 
     public void enviarPedirFichero(String fichero) throws IOException {
-        objetoOut = new ObjectOutputStream(out);
         objetoOut.writeObject(new MensajePedirFichero(getId(),"Servidor",fichero));
     }
 
