@@ -4,13 +4,11 @@ package Oyentes;
 import Mensaje.*;
 import Cliente.Cliente;
 import Util.GeneradorPuertos;
-import javafx.util.Pair;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class OyenteServidor extends Thread {
     InputStream is;
@@ -37,28 +35,28 @@ public class OyenteServidor extends Thread {
 
             Mensaje men = (Mensaje) in.readObject();
 
-            if(men.getTipo().equals("OK")){
+            if(men.getTipo() == TiposMensajes.OK_CONEXION){
 
 
                 while(true){
                     men = (Mensaje) in.readObject();
 
                     switch (men.getTipo()){
-                        case "CerrarConexion":
+                        case CERRAR_CONEXION:
                             break;//TODO ?¿?¿?¿?
-                        case "DevolverListaUsuarios":
-                            MensajeDevolverListaUsuarios aux = (MensajeDevolverListaUsuarios) men;
+                        case LISTA_USUARIOS:
+                            MensajeOkListaUsuarios aux = (MensajeOkListaUsuarios) men;
                             cliente.setFicherosExternos(aux.getListaUsuarios());
                             break;
-                        case "DevolverCliente":
-                            MensajeDevolverCliente aux3 = (MensajeDevolverCliente) men;
+                        case OK_EMITIR_FICHERO:
+                            MensajeOkEmitirFichero aux3 = (MensajeOkEmitirFichero) men;
                             int puerto = aux3.getPuerto();
                             InetAddress ip = aux3.getIp();
                             //TODO Crear un socket con el puerto y la ip que nos ha pasado el servidor
-                        case "PedirCliente":
-                            MensajePedirCliente aux2 = (MensajePedirCliente) men;
+                        case EMITIR_FICHERO:
+                            MensajeEmitirFichero aux2 = (MensajeEmitirFichero) men;
                             ServerSocket s = new ServerSocket(GeneradorPuertos.nuevoPuerto());
-                            //TODO Enviar el puerto al servidor para que se lo pase al cliente 1
+                            out.writeObject(new MensajeOkEmitirFichero(men.getDestino(),men.getOrigen(),s.getInetAddress(), s.getLocalPort()));
                             break;
                         default://TODO MENSAJE ERROR?
                             System.out.println("Mensaje no reconocido");

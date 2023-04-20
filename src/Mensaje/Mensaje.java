@@ -5,11 +5,15 @@ import java.io.Serializable;
 public abstract class Mensaje implements Serializable {
     String idOrigen;
     String idDestino;
-    public Mensaje(String origen, String destino) {
+    TiposMensajes tipo;
+    public Mensaje(String origen, String destino,TiposMensajes tipoM) {
         idOrigen = origen;
         idDestino = destino;
+        tipo = tipoM;
     }
-    public abstract String getTipo();
+    public TiposMensajes getTipo(){
+        return tipo;
+    }
 
     public String getOrigen() {
         return idOrigen;

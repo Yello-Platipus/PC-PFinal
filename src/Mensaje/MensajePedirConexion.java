@@ -8,23 +8,9 @@ public class MensajePedirConexion extends Mensaje{
     String id;
     Set<String> info;
     public MensajePedirConexion(String origen, String destino, String id, Set<String> info) {
-        super(origen, destino);
+        super(origen, destino,TiposMensajes.CONEXION);
         this.id = id;
         this.info = info;
-    }
-    @Override
-    public String getTipo() {
-        return "PedirConexion";
-    }
-
-    @Override
-    public String getOrigen() {
-        return null;
-    }
-
-    @Override
-    public String getDestino() {
-        return null;
     }
 
     public String getId(){
