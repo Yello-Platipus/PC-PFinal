@@ -1,6 +1,7 @@
 package Oyentes;
 
 
+import GUI.MainWindowCliente;
 import Mensaje.*;
 import Cliente.Cliente;
 import Util.GeneradorPuertos;
@@ -38,6 +39,7 @@ public class OyenteServidor extends Thread {
                         case OK_LISTA_USUARIOS:
                             MensajeOkListaUsuarios aux = (MensajeOkListaUsuarios) men;
                             cliente.setFicherosExternos(aux.getListaUsuarios());
+                            new MainWindowCliente(cliente);
                             break;
                         case EMITIR_FICHERO:
                             MensajeEmitirFichero aux2 = (MensajeEmitirFichero) men;

@@ -20,7 +20,6 @@ public class Cliente {
     private Socket socket;
     private InputStream in;
     private OutputStream out;
-    private OyenteServidor conexion;
     private ObjectOutputStream objetoOut;
     private ObjectInputStream objetoIn;
     private ArrayList<String> ficherosExternos;
@@ -78,5 +77,9 @@ public class Cliente {
 
     public String getIp(){
         return usuario.getIp().getHostAddress();
+    }
+
+    public ArrayList<String> getFicheros(){
+        return ficherosExternos;
     }
 }

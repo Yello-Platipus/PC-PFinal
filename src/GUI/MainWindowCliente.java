@@ -16,8 +16,6 @@ public class MainWindowCliente extends JFrame {
 
     private JTextField nombreUsuario;
     private Cliente cliente;
-    // Tener en cuenta que esto no se actualiza automaticamente, solo cuando se pulsa el boton de actualizar
-    private ArrayList<String> ficherosExternos;
 
     public MainWindowCliente() {
         super();
@@ -27,7 +25,6 @@ public class MainWindowCliente extends JFrame {
         this.setLocationRelativeTo(null);
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 
-        ficherosExternos = new ArrayList<>();
         JLabel m = new JLabel("Introduzca su nombre de usuario:");
         this.add(m);
         nombreUsuario = new JTextField(30);
@@ -86,8 +83,10 @@ public class MainWindowCliente extends JFrame {
         });
         this.add(pedirListaFicheros);
 
-        if(ficherosExternos != null && !ficherosExternos.isEmpty()) {
+        if(cliente.getFicheros() != null && !cliente.getFicheros().isEmpty()) {
             listaFicheros = new JComboBox<String>();
+            for(String fichero : cliente.getFicheros())
+                listaFicheros.addItem(fichero);
             this.add(listaFicheros);
             anadirPedirFichero((String) listaFicheros.getSelectedItem());
         }
