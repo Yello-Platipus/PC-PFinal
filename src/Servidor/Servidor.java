@@ -49,8 +49,11 @@ public class Servidor {
 
     public synchronized void anadirUsuario(String id, InputStream entrada, OutputStream salida,Set<String> elems){
         entradaSalidaUsers.put(id, new Pair<>(entrada, salida));
-        for(String archivo : elems)
+        for(String archivo : elems){
+            if(!quienTiene.containsKey(archivo))
+                quienTiene.put(archivo, new ArrayList<>());
             quienTiene.get(archivo).add(id);
+        }
     }
 
     public synchronized void eliminarUsuario(String id,Set<String> elems){

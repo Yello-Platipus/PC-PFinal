@@ -18,6 +18,7 @@ public class OyenteServidor extends Thread {
 
         this.is = is;
         this.out = out;
+        this.cliente = cliente;
 
     }
 
@@ -38,8 +39,7 @@ public class OyenteServidor extends Thread {
                             break;//TODO ?¿?¿?¿?
                         case OK_LISTA_USUARIOS:
                             MensajeOkListaUsuarios aux = (MensajeOkListaUsuarios) men;
-                            cliente.setFicherosExternos(aux.getListaUsuarios());
-                            new MainWindowCliente(cliente);
+                            new MainWindowCliente(cliente, aux.getListaUsuarios());
                             break;
                         case EMITIR_FICHERO:
                             MensajeEmitirFichero aux2 = (MensajeEmitirFichero) men;
