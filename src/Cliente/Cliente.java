@@ -1,9 +1,6 @@
 package Cliente;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -25,6 +22,7 @@ public class Cliente {
     private OutputStream out;
     private OyenteServidor conexion;
     private ObjectOutputStream objetoOut;
+    private ObjectInputStream objetoIn;
     private ArrayList<String> ficherosExternos;
 
     public Cliente(Usuario usuario) {
@@ -41,10 +39,15 @@ public class Cliente {
     public void conectar() {
         try {
             socket = new Socket(Servidor.Host, Servidor.getPuerto());
-            new OyenteServidor(socket, this).start();
-            in = socket.getInputStream();
+            socket.setSoTimeout(0);
             out = socket.getOutputStream();
+            in = socket.getInputStream();
+
             objetoOut = new ObjectOutputStream(out);
+            objetoIn = new ObjectInputStream(in);
+
+
+            new OyenteServidor(objetoIn,objetoOut, this).start();
             objetoOut.writeObject(new MensajePedirConexion(getId(),"Servidor",getId(),getInfo()));
             new MainWindowCliente(this);
         } catch (IOException e) {

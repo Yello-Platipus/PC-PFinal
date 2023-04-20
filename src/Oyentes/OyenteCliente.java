@@ -35,10 +35,9 @@ public class OyenteCliente extends Thread {
             if(men.getTipo() == TiposMensajes.CONEXION){
                 MensajePedirConexion aux = (MensajePedirConexion) men;
                 se.anadirUsuario(aux.getId(),in,out,aux.getInfo());
-                out.writeObject(new MensajeOkConexion(men.getDestino(),men.getOrigen()));
+                out.writeObject(new MensajeOkConexion(aux.getDestino(),aux.getOrigen()));
 
                 while(men.getTipo() != TiposMensajes.CERRAR_CONEXION){
-
                     men = (Mensaje) in.readObject();
 
                     switch (men.getTipo()){

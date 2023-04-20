@@ -6,40 +6,31 @@ import Cliente.Cliente;
 import Util.GeneradorPuertos;
 
 import java.io.*;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
+
 
 public class OyenteServidor extends Thread {
-    InputStream is;
-    OutputStream os;
-    Cliente cliente;
-    public OyenteServidor(Socket serverSo, Cliente cliente) {
 
-        try {
-            this.cliente = cliente;
-            serverSo.setSoTimeout(0);
-            is = serverSo.getInputStream();
-            os = serverSo.getOutputStream();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+    Cliente cliente;
+    ObjectInputStream is;
+    ObjectOutputStream out;
+    public OyenteServidor( ObjectInputStream is, ObjectOutputStream out, Cliente cliente) {
+
+        this.is = is;
+        this.out = out;
+
     }
 
     public void run(){
         //TODO Hay que ver si se hace con un solo hilo, como el de OyenteCliente o para cada
         try {
-            ObjectInputStream in = new ObjectInputStream(is);
-            ObjectOutputStream out = new ObjectOutputStream(os);
 
-            Mensaje men = (Mensaje) in.readObject();
+            Mensaje men = (Mensaje) is.readObject();
 
             if(men.getTipo() == TiposMensajes.OK_CONEXION){
 
 
                 while(men.getTipo() != TiposMensajes.CERRAR_CONEXION){
-                    men = (Mensaje) in.readObject();
+                    men = (Mensaje) is.readObject();
 
                     switch (men.getTipo()){
                         case CERRAR_CONEXION:
