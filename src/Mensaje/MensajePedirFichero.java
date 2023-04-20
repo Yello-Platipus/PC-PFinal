@@ -11,4 +11,6 @@ public class MensajePedirFichero extends Mensaje{
     public String getFichero(){
         return fichero;
     }
+
+
 }
