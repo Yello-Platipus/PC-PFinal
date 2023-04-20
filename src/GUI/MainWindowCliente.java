@@ -60,7 +60,7 @@ public class MainWindowCliente extends JFrame {
     public MainWindowCliente(Cliente c){
         super();
         cliente = c;
-        this.setTitle("Cliente" + cliente.getId());
+        this.setTitle("Cliente " + cliente.getId());
         this.setSize(400, 400);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
@@ -92,7 +92,7 @@ public class MainWindowCliente extends JFrame {
         super();
         cliente = c;
         this.ficheros = ficheros;
-        this.setTitle("Cliente" + cliente.getId());
+        this.setTitle("Cliente " + cliente.getId());
         this.setSize(400, 400);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
