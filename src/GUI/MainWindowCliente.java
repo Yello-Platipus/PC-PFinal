@@ -10,15 +10,23 @@ import java.awt.event.ActionListener;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-public class MainWindowCliente extends JPanel {
+public class MainWindowCliente extends JFrame {
 
     private JTextField nombreUsuario;
     private Cliente cliente;
 
     public MainWindowCliente() {
         super();
-        this.add(new JLabel("Introduzca su nombre de usuario:"));
+        this.setTitle("Login Cliente");
+        this.setSize(400, 400);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+        this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
+
+        JLabel m = new JLabel("Introduzca su nombre de usuario:");
+        this.add(m);
         nombreUsuario = new JTextField(30);
+        nombreUsuario.setMaximumSize(new java.awt.Dimension(400, 50));
         this.add(nombreUsuario);
         JButton conectar = new JButton("Conectar");
         conectar.addActionListener(new ActionListener() {
@@ -26,7 +34,7 @@ public class MainWindowCliente extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String id = getNombreUsuario();
                 if (id.equals("")) {
-                    JOptionPane.showMessageDialog(null, "Debe introducir un nombre de usuario");
+                    JOptionPane.showMessageDialog(null, "Debe introducir un nombre de usuario", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
                     InetAddress ip = null;
                     try {
@@ -40,6 +48,19 @@ public class MainWindowCliente extends JPanel {
             }
         });
         this.add(conectar);
+
+        this.setVisible(true);
+    }
+
+    public MainWindowCliente(Cliente c){
+        super();
+        this.setTitle("Cliente" + c.getId());
+        this.setSize(400, 400);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+        this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
+
+        JLabel m = new JLabel("Bienvenido " + c.getId());
     }
 
     public String getNombreUsuario() {

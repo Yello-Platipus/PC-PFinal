@@ -21,13 +21,12 @@ public class ClienteReceptor extends Thread {
             socket = new Socket(ip, puerto);
             in = socket.getInputStream();
             out = socket.getOutputStream();
-            archivo = new FileOutputStream(Usuario.ruta + cliente.getId() + "/" + fichero);
+            archivo = new FileOutputStream(Usuario.ruta + cliente.getId() + "/" + fichero, false);
 
             byte[] buffer = new byte[1024];
             int bytesRead;
-            while ((bytesRead = in.read(buffer)) != -1) {
+            while ((bytesRead = in.read(buffer)) != -1)
                 archivo.write(buffer, 0, bytesRead);
-            }
 
             archivo.close();
             in.close();
