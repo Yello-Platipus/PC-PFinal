@@ -48,16 +48,18 @@ public class OyenteServidor extends Thread {
                             MensajeOkListaUsuarios aux = (MensajeOkListaUsuarios) men;
                             cliente.setFicherosExternos(aux.getListaUsuarios());
                             break;
+                        case EMITIR_FICHERO:
+                            MensajeEmitirFichero aux2 = (MensajeEmitirFichero) men;
+                            int puerto2 = GeneradorPuertos.nuevoPuerto();
+                            new ClienteEmisor(cliente,puerto2,aux2.getFichero()).start();
+                            out.writeObject(new MensajeOkEmitirFichero(men.getDestino(),men.getOrigen(),cliente.getIp(),puerto2,aux2.getFichero()));
+                            break;
                         case OK_EMITIR_FICHERO:
                             MensajeOkEmitirFichero aux3 = (MensajeOkEmitirFichero) men;
                             int puerto = aux3.getPuerto();
-                            InetAddress ip = aux3.getIp();
-                            new ClienteReceptor(puerto,ip,aux3.getDeDonde()).start();
-                        case EMITIR_FICHERO:
-                            MensajeEmitirFichero aux2 = (MensajeEmitirFichero) men;
-                            ServerSocket s = new ServerSocket(GeneradorPuertos.nuevoPuerto());
-                            out.writeObject(new MensajeOkEmitirFichero(men.getDestino(),men.getOrigen(),s.getInetAddress(), s.getLocalPort(),aux2.getDeDonde()));
-                            break;
+                            String ip = aux3.getIp();
+                            new ClienteReceptor(cliente,ip,puerto,aux3.getFichero()).start();
+
                         default://TODO MENSAJE ERROR?
                             System.out.println("Mensaje no reconocido");
                     }
