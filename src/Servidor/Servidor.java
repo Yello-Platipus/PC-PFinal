@@ -4,10 +4,7 @@ import Mensaje.TiposMensajes;
 import Oyentes.OyenteCliente;
 import javafx.util.Pair;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
@@ -17,17 +14,17 @@ public class Servidor {
     private ServerSocket serverSocket;
     private static final int puerto = 8080;
     public static final String Host = "localhost";
-    private Map<String, Pair<InputStream, OutputStream>> entradaSalidaUsers;
-    private Map<String, ArrayList<String>> quienTiene;
 
+    private MonitorUsers monitorUsers;
+    private MonitorArchivos monitorArchivos;
     public Servidor() throws IOException {
         try {
             this.serverSocket = new ServerSocket(puerto);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        entradaSalidaUsers = new HashMap<>();
-        quienTiene = new HashMap<>();
+        monitorUsers = new MonitorUsers();
+        monitorArchivos = new MonitorArchivos();
         start(puerto);
     }
 
@@ -39,46 +36,45 @@ public class Servidor {
 
         }
     }
-    public void end() throws IOException {
+    /*public void end() throws IOException {
         for(Pair<InputStream, OutputStream> entradaSalida : entradaSalidaUsers.values()){
             ObjectOutputStream objetoOut = new ObjectOutputStream(entradaSalida.getValue());
             objetoOut.writeObject(TiposMensajes.CERRAR_CONEXION);
         }
         serverSocket.close();
-    }
+    }*/
 
-    public synchronized void anadirUsuario(String id, InputStream entrada, OutputStream salida,Set<String> elems){
-        entradaSalidaUsers.put(id, new Pair<>(entrada, salida));
-        for(String archivo : elems){
-            if(!quienTiene.containsKey(archivo))
-                quienTiene.put(archivo, new ArrayList<>());
-            quienTiene.get(archivo).add(id);
-        }
+    public synchronized void anadirUsuario(String id, ObjectInputStream entrada, ObjectOutputStream salida, Set<String> elems){
+        monitorUsers.anadirUsuario(id, entrada, salida);
+        for(String archivo : elems)
+            monitorArchivos.anadirArchivo(id, archivo);
     }
 
     public synchronized void eliminarUsuario(String id,Set<String> elems){
-        entradaSalidaUsers.remove(id);
+        monitorUsers.eliminarUsuario(id);
         for(String archivo : elems)
-            quienTiene.get(archivo).remove(id);
+            monitorArchivos.eliminarArchivo(id, archivo);
     }
 
     public synchronized ArrayList<String> getInfo(){
-        return new ArrayList<>(quienTiene.keySet());
+        return monitorArchivos.getInfo();
     }
 
-    public synchronized Pair<InputStream, OutputStream> getUsuario(String fichero) throws RuntimeException{
-        ArrayList<String> idUsuarios = quienTiene.get(fichero);
+    public synchronized Pair<ObjectInputStream, ObjectOutputStream> getUsuario(String fichero) throws RuntimeException{//TODO cuidado
+        ArrayList<String> idUsuarios = monitorArchivos.getUsuarios(fichero);
         if(idUsuarios.size() == 0)
             throw new RuntimeException("No hay usuarios que tengan el archivo");
         else
-            return entradaSalidaUsers.get(idUsuarios.get(0));
+            return monitorUsers.getUsuarios(idUsuarios.get(0));
     }
 
-    public synchronized Pair<InputStream, OutputStream> getUsuarioPorId(String id) throws RuntimeException{
-        if(!entradaSalidaUsers.containsKey(id))
+    public synchronized Pair<ObjectInputStream, ObjectOutputStream> getUsuarioPorId(String id) throws RuntimeException{
+        try{
+            return monitorUsers.getUsuarioPorId(id);
+        }
+        catch (Exception e){
             throw new RuntimeException("No hay usuarios con ese id");
-        else
-            return entradaSalidaUsers.get(id);
+        }
     }
 
     public static int getPuerto() {

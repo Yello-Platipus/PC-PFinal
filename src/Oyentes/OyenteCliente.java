@@ -42,11 +42,12 @@ public class OyenteCliente extends Thread {
 
                     switch (men.getTipo()){
                         case LISTA_USUARIOS:
+                            System.out.println("Hola");
                             out.writeObject(new MensajeOkListaUsuarios(men.getDestino(),men.getOrigen(),se.getInfo()));
                             break;
                         case PEDIR_FICHERO:
                             MensajePedirFichero aux1 = (MensajePedirFichero) men;
-                            Pair<InputStream, OutputStream> par = null;
+                            Pair<ObjectInputStream, ObjectOutputStream> par = null;
                             try {
                                 par = se.getUsuario(aux1.getFichero());//1- Buscar al cliente con lo que pide el cliente 1
                             }
@@ -55,13 +56,12 @@ public class OyenteCliente extends Thread {
                                 break;
                             }
                             //2- Con el in y el out de ese cliente 2 encontrado
-                            ObjectOutputStream outCliente2 = new ObjectOutputStream(par.getValue());
-                            outCliente2.writeObject(new MensajeEmitirFichero(aux1.getDestino(),aux1.getOrigen(),((MensajePedirFichero) men).getFichero()));//3- Enviarle un mensaje de tipo "PedirSocket" con el socket del cliente 2
+                            par.getValue().writeObject(new MensajeEmitirFichero(aux1.getDestino(),aux1.getOrigen(),((MensajePedirFichero) men).getFichero()));//3- Enviarle un mensaje de tipo "PedirSocket" con el socket del cliente 2
 
                             break;
                         case OK_EMITIR_FICHERO:
                             MensajeOkEmitirFichero aux3 = (MensajeOkEmitirFichero) in.readObject();//4- El cliente 2 recibe el mensaje y le responde con un mensaje de tipo "DevolverSocket"
-                            Pair<InputStream, OutputStream> parAux = null;
+                            Pair<ObjectInputStream, ObjectOutputStream> parAux = null;
                             try {
                                 parAux = se.getUsuario(aux3.getFichero());//1- Buscar al cliente con lo que pide el cliente 1
                             }
@@ -69,8 +69,7 @@ public class OyenteCliente extends Thread {
                                 e.printStackTrace();
                                 break;
                             }
-                            ObjectOutputStream outAux = new ObjectOutputStream(parAux.getValue());
-                            outAux.writeObject(aux3);//5- Enviar el mensaje de tipo "DevolverSocket" al cliente 1
+                            parAux.getValue().writeObject(aux3);//5- Enviar el mensaje de tipo "DevolverSocket" al cliente 1
                         case CERRAR_CONEXION:
                             MensajeCerrarConexion aux2 = (MensajeCerrarConexion) men;
                             se.eliminarUsuario(aux2.getId(),aux2.getInfo());

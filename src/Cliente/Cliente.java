@@ -22,7 +22,6 @@ public class Cliente {
     private OutputStream out;
     private ObjectOutputStream objetoOut;
     private ObjectInputStream objetoIn;
-    private ArrayList<String> ficherosExternos;
 
     public Cliente(Usuario usuario) {
         this.usuario = usuario;
@@ -68,15 +67,10 @@ public class Cliente {
         objetoOut.writeObject(new MensajePedirFichero(getId(),"Servidor",fichero));
     }
 
-    public void setFicherosExternos(ArrayList<String> ficheros){
-        ficherosExternos = ficheros;
-    }
+
 
     public String getIp(){
         return usuario.getIp().getHostAddress();
     }
 
-    public ArrayList<String> getFicheros(){
-        return ficherosExternos;
-    }
 }

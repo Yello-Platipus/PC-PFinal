@@ -39,7 +39,7 @@ public class OyenteServidor extends Thread {
                             break;//TODO ?¿?¿?¿?
                         case OK_LISTA_USUARIOS:
                             MensajeOkListaUsuarios aux = (MensajeOkListaUsuarios) men;
-                            new MainWindowCliente(cliente, aux.getListaUsuarios());
+                            new MainWindowCliente(cliente,aux.getListaUsuarios());
                             break;
                         case EMITIR_FICHERO:
                             MensajeEmitirFichero aux2 = (MensajeEmitirFichero) men;
