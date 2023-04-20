@@ -14,14 +14,27 @@ public class ClienteReceptor extends Thread {
     private OutputStream out;
     private Socket socket;
     private FileOutputStream archivo;
+    private String ip;
+    private int puerto;
 
     public ClienteReceptor(Cliente c, String ip, int puerto, String fichero){
         try {
+            this.ip = ip;
+            this.puerto = puerto;
             cliente = c;
+            archivo = new FileOutputStream(Usuario.ruta + cliente.getId() + "/" + fichero, false);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void run(){
+        try {
             socket = new Socket(ip, puerto);
+            socket.setSoTimeout(0);
             in = socket.getInputStream();
             out = socket.getOutputStream();
-            archivo = new FileOutputStream(Usuario.ruta + cliente.getId() + "/" + fichero, false);
 
             byte[] buffer = new byte[1024];
             int bytesRead;

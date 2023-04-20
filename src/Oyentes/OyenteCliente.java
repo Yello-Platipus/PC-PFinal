@@ -42,7 +42,6 @@ public class OyenteCliente extends Thread {
 
                     switch (men.getTipo()){
                         case LISTA_USUARIOS:
-                            System.out.println("Hola");
                             out.writeObject(new MensajeOkListaUsuarios(men.getDestino(),men.getOrigen(),se.getInfo()));
                             break;
                         case PEDIR_FICHERO:
@@ -56,7 +55,7 @@ public class OyenteCliente extends Thread {
                                 break;
                             }
                             //2- Con el in y el out de ese cliente 2 encontrado
-                            par.getValue().writeObject(new MensajeEmitirFichero(aux1.getDestino(),aux1.getOrigen(),((MensajePedirFichero) men).getFichero()));//3- Enviarle un mensaje de tipo "PedirSocket" con el socket del cliente 2
+                            par.getValue().writeObject(new MensajeEmitirFichero(aux1.getDestino(),aux1.getOrigen(),aux1.getFichero()));//3- Enviarle un mensaje de tipo "PedirSocket" con el socket del cliente 2
 
                             break;
                         case OK_EMITIR_FICHERO:

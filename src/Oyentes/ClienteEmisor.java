@@ -19,10 +19,18 @@ public class ClienteEmisor extends Thread {
         try {
             cliente = c;
             serverSocket = new ServerSocket(puerto);
+            archivo = new FileInputStream(Usuario.ruta + cliente.getId() + "/" + fichero);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void run(){
+        try {
             socket = serverSocket.accept();
+            socket.setSoTimeout(0);
             out = socket.getOutputStream();
             // Puede que la ruta de archivo este mal(?)
-            archivo = new FileInputStream(Usuario.ruta + cliente.getId() + "/" + fichero);
 
             byte[] buffer = new byte[1024];
             int bytesRead;
