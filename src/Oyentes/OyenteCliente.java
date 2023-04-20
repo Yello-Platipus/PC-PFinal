@@ -57,14 +57,14 @@ public class OyenteCliente extends Thread {
                             }
                             //2- Con el in y el out de ese cliente 2 encontrado
                             ObjectOutputStream outCliente2 = new ObjectOutputStream(par.getValue());
-                            outCliente2.writeObject(new MensajeEmitirFichero(aux1.getDestino(),aux1.getOrigen()));//3- Enviarle un mensaje de tipo "PedirSocket" con el socket del cliente 2
+                            outCliente2.writeObject(new MensajeEmitirFichero(aux1.getDestino(),aux1.getOrigen(),((MensajePedirFichero) men).getFichero()));//3- Enviarle un mensaje de tipo "PedirSocket" con el socket del cliente 2
 
                             break;
                         case OK_EMITIR_FICHERO:
                             MensajeOkEmitirFichero aux3 = (MensajeOkEmitirFichero) in.readObject();//4- El cliente 2 recibe el mensaje y le responde con un mensaje de tipo "DevolverSocket"
                             Pair<InputStream, OutputStream> parAux = null;
                             try {
-                                parAux = se.getUsuarioPorId(aux3.getADonde());//1- Buscar al cliente con lo que pide el cliente 1
+                                parAux = se.getUsuario(aux3.getFichero());//1- Buscar al cliente con lo que pide el cliente 1
                             }
                             catch (RuntimeException e){
                                 e.printStackTrace();

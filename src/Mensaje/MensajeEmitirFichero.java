@@ -1,14 +1,14 @@
 package Mensaje;
 
 public class MensajeEmitirFichero extends Mensaje{
-    String deDonde;
-    public MensajeEmitirFichero(String origen, String destino){
+    String fichero;
+    public MensajeEmitirFichero(String origen, String destino, String fichero){
         super(origen, destino,TiposMensajes.EMITIR_FICHERO);
-        deDonde = origen;
+        this.fichero = origen;
     }
 
-    public String getDeDonde(){
-        return deDonde;
+    public String getFichero(){
+        return fichero;
     }
 
 }

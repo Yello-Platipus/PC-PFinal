@@ -3,17 +3,17 @@ package Mensaje;
 import java.net.InetAddress;
 
 public class MensajeOkEmitirFichero extends Mensaje{//TODO cambiar
-    InetAddress ip;
+    String ip;
     int puerto;
-    String aDonde;
-    public MensajeOkEmitirFichero(String origen, String destino, InetAddress ip, int puerto,String deDonde) {
+    String fichero;
+    public MensajeOkEmitirFichero(String origen, String destino, String ip, int puerto,String fichero) {
         super(origen, destino,TiposMensajes.OK_EMITIR_FICHERO);
         this.ip = ip;
         this.puerto = puerto;
-        aDonde = deDonde;
+        this.fichero = fichero;
     }
 
-    public InetAddress getIp(){
+    public String getIp(){
         return ip;
     }
 
@@ -21,7 +21,7 @@ public class MensajeOkEmitirFichero extends Mensaje{//TODO cambiar
         return puerto;
     }
 
-    public String getADonde(){
-        return aDonde;
+    public String getFichero(){
+        return fichero;
     }
 }
