@@ -1,10 +1,12 @@
 package Servidor;
 
+import Mensaje.TiposMensajes;
 import Oyentes.OyenteCliente;
 import javafx.util.Pair;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -38,6 +40,10 @@ public class Servidor {
         }
     }
     public void end() throws IOException {
+        for(Pair<InputStream, OutputStream> entradaSalida : entradaSalidaUsers.values()){
+            ObjectOutputStream objetoOut = new ObjectOutputStream(entradaSalida.getValue());
+            objetoOut.writeObject(TiposMensajes.CERRAR_CONEXION);
+        }
         serverSocket.close();
     }
 
@@ -63,6 +69,13 @@ public class Servidor {
             throw new RuntimeException("No hay usuarios que tengan el archivo");
         else
             return entradaSalidaUsers.get(idUsuarios.get(0));
+    }
+
+    public synchronized Pair<InputStream, OutputStream> getUsuarioPorId(String id) throws RuntimeException{
+        if(!entradaSalidaUsers.containsKey(id))
+            throw new RuntimeException("No hay usuarios con ese id");
+        else
+            return entradaSalidaUsers.get(id);
     }
 
     public static int getPuerto() {

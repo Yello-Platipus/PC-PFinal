@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import Mensaje.MensajePedirConexion;
+import Mensaje.MensajePedirFichero;
+import Mensaje.MensajePedirListaUsuarios;
 import Oyentes.OyenteCliente;
 import Oyentes.OyenteServidor;
 import Servidor.Servidor;
@@ -41,6 +43,8 @@ public class Cliente {
             new OyenteServidor(socket, this).start();
             in = socket.getInputStream();
             out = socket.getOutputStream();
+            objetoOut = new ObjectOutputStream(out);
+            objetoOut.writeObject(new MensajePedirConexion(getId(),"Servidor",getId(),getInfo()));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -54,9 +58,14 @@ public class Cliente {
         return usuario.getInfo();
     }
 
-    public void enviar() throws IOException {
+    public void enviarPedirLista() throws IOException {
         objetoOut = new ObjectOutputStream(out);
-        objetoOut.writeObject(new MensajePedirConexion("Cliente","Servidor",getId(),getInfo()));
+        objetoOut.writeObject(new MensajePedirListaUsuarios(getId(),"Servidor"));
+    }
+
+    public void enviarPedirFichero(String fichero) throws IOException {
+        objetoOut = new ObjectOutputStream(out);
+        objetoOut.writeObject(new MensajePedirFichero(getId(),"Servidor",fichero));
     }
 
     public void setFicherosExternos(ArrayList<String> ficheros){
