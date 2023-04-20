@@ -7,13 +7,17 @@ import Util.GeneradorPuertos;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 public class MainWindowCliente extends JFrame {
 
     private JTextField nombreUsuario;
     private Cliente cliente;
+    // Tener en cuenta que esto no se actualiza automaticamente, solo cuando se pulsa el boton de actualizar
+    private ArrayList<String> ficherosExternos;
 
     public MainWindowCliente() {
         super();
@@ -23,6 +27,7 @@ public class MainWindowCliente extends JFrame {
         this.setLocationRelativeTo(null);
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 
+        ficherosExternos = new ArrayList<>();
         JLabel m = new JLabel("Introduzca su nombre de usuario:");
         this.add(m);
         nombreUsuario = new JTextField(30);
@@ -41,6 +46,7 @@ public class MainWindowCliente extends JFrame {
                         ip = InetAddress.getLocalHost();
                         cliente = new Cliente(new Usuario(id, ip, GeneradorPuertos.nuevoPuerto()));
                         cliente.conectar();
+                        dispose();
                     } catch (UnknownHostException ex) {
                         ex.printStackTrace();
                     }
@@ -54,13 +60,55 @@ public class MainWindowCliente extends JFrame {
 
     public MainWindowCliente(Cliente c){
         super();
-        this.setTitle("Cliente" + c.getId());
+        cliente = c;
+        this.setTitle("Cliente" + cliente.getId());
         this.setSize(400, 400);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 
-        JLabel m = new JLabel("Bienvenido " + c.getId());
+        JLabel m = new JLabel("Bienvenido " + cliente.getId());
+        this.add(m);
+
+        JComboBox<String> listaFicheros;
+
+        JButton pedirListaFicheros = new JButton("Pedir lista de ficheros disponibles");
+        pedirListaFicheros.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    cliente.enviarPedirLista();
+                    dispose();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        this.add(pedirListaFicheros);
+
+        if(ficherosExternos != null && !ficherosExternos.isEmpty()) {
+            listaFicheros = new JComboBox<String>();
+            this.add(listaFicheros);
+            anadirPedirFichero((String) listaFicheros.getSelectedItem());
+        }
+
+        this.setVisible(true);
+    }
+
+    public void anadirPedirFichero(String fichero){
+        JButton pedirFichero = new JButton("Pedir fichero");
+        pedirFichero.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    cliente.enviarPedirFichero(fichero);
+                    dispose();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        this.add(pedirFichero);
     }
 
     public String getNombreUsuario() {

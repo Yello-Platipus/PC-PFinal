@@ -10,6 +10,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Set;
 
+import GUI.MainWindowCliente;
 import Mensaje.MensajePedirConexion;
 import Mensaje.MensajePedirFichero;
 import Mensaje.MensajePedirListaUsuarios;
@@ -45,7 +46,7 @@ public class Cliente {
             out = socket.getOutputStream();
             objetoOut = new ObjectOutputStream(out);
             objetoOut.writeObject(new MensajePedirConexion(getId(),"Servidor",getId(),getInfo()));
-
+            new MainWindowCliente(this);
         } catch (IOException e) {
             e.printStackTrace();
         }

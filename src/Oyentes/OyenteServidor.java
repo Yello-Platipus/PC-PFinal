@@ -52,7 +52,6 @@ public class OyenteServidor extends Thread {
                             MensajeOkEmitirFichero aux3 = (MensajeOkEmitirFichero) men;
                             int puerto = aux3.getPuerto();
                             InetAddress ip = aux3.getIp();
-                            new ClienteReceptor(puerto,ip,aux3.getDeDonde()).start();
                         case EMITIR_FICHERO:
                             MensajeEmitirFichero aux2 = (MensajeEmitirFichero) men;
                             ServerSocket s = new ServerSocket(GeneradorPuertos.nuevoPuerto());
