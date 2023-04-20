@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Usuario {
-    private final static String ruta = "../../data/";
+    public final static String ruta = "../../data/";
     private String id;
     private static InetAddress ip;
     private int puerto;
@@ -38,7 +38,7 @@ public class Usuario {
     public String getId() {
         return id;
     }
-    public static InetAddress getIp() {
+    public InetAddress getIp() {
         return ip;
     }
     public int getPuerto() {
