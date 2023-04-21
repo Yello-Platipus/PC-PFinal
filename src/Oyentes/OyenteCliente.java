@@ -70,6 +70,7 @@ public class OyenteCliente extends Thread {
                                 break;
                             }
                             parAux.getValue().writeObject(aux3);//5- Enviar el mensaje de tipo "DevolverSocket" al cliente 1
+                            break;
                         case CERRAR_CONEXION:
                             MensajeCerrarConexion aux2 = (MensajeCerrarConexion) men;
                             se.eliminarUsuario(aux2.getId(),aux2.getInfo());

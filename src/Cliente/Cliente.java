@@ -67,8 +67,6 @@ public class Cliente {
         objetoOut.writeObject(new MensajePedirFichero(getId(),"Servidor",fichero));
     }
 
-
-
     public String getIp(){
         return usuario.getIp().getHostAddress();
     }
