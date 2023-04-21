@@ -120,24 +120,28 @@ public class MainWindowCliente extends JFrame {
         for(String fichero : this.ficheros)
             listaFicheros.addItem(fichero);
         this.add(listaFicheros);
-        anadirPedirFichero((String) listaFicheros.getSelectedItem());
-
+        anadirPedirFichero(listaFicheros);
         this.setVisible(true);
     }
 
-    public void anadirPedirFichero(String fichero){
+    public void anadirPedirFichero(JComboBox<String> listaFicheros){
         JButton pedirFichero = new JButton("Pedir fichero");
         pedirFichero.addActionListener(new ActionListener() {
+            JComboBox<String> listaFicheros;
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    cliente.enviarPedirFichero(fichero);
-                    dispose();
+                    cliente.enviarPedirFichero((String) listaFicheros.getSelectedItem());
+                    //dispose();
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
             }
-        });
+            public ActionListener init(JComboBox<String> listaFicheros){
+                this.listaFicheros = listaFicheros;
+                return this;
+            }
+        }.init(listaFicheros));
         this.add(pedirFichero);
     }
 

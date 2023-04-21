@@ -44,8 +44,7 @@ public class OyenteServidor extends Thread {
                         case EMITIR_FICHERO:
                             MensajeEmitirFichero aux2 = (MensajeEmitirFichero) men;
                             int puerto2 = GeneradorPuertos.nuevoPuerto();
-                            out.writeObject(new MensajeOkEmitirFichero(men.getDestino(),men.getOrigen(),cliente.getIp(),puerto2,aux2.getIdReceptor(), aux2.getFichero()));
-                            new ClienteEmisor(cliente,puerto2,aux2.getFichero()).start();
+                            new ClienteEmisor(cliente,puerto2,aux2.getFichero(),out,aux2).start();
                             break;
                         case OK_EMITIR_FICHERO:
                             MensajeOkEmitirFichero aux3 = (MensajeOkEmitirFichero) men;

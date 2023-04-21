@@ -60,7 +60,7 @@ public class OyenteCliente extends Thread {
 
                             break;
                         case OK_EMITIR_FICHERO:
-                            MensajeOkEmitirFichero aux3 = (MensajeOkEmitirFichero) in.readObject();//4- El cliente 2 recibe el mensaje y le responde con un mensaje de tipo "DevolverSocket"
+                            MensajeOkEmitirFichero aux3 = (MensajeOkEmitirFichero) men;//4- El cliente 2 recibe el mensaje y le responde con un mensaje de tipo "DevolverSocket"
                             Pair<ObjectInputStream, ObjectOutputStream> parAux = null;
                             try {
                                 parAux = se.getUsuarioPorId(aux3.getIdReceptor());//1- Buscar al cliente con lo que pide el cliente 1
