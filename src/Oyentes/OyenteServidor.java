@@ -29,8 +29,6 @@ public class OyenteServidor extends Thread {
             Mensaje men = (Mensaje) is.readObject();
 
             if(men.getTipo() == TiposMensajes.OK_CONEXION){
-
-
                 while(men.getTipo() != TiposMensajes.CERRAR_CONEXION){
                     men = (Mensaje) is.readObject();
 
