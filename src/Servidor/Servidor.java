@@ -44,31 +44,36 @@ public class Servidor {
         serverSocket.close();
     }*/
 
-    public synchronized void anadirUsuario(String id, ObjectInputStream entrada, ObjectOutputStream salida, Set<String> elems){
+    public void anadirUsuario(String id, ObjectInputStream entrada, ObjectOutputStream salida, Set<String> elems) throws InterruptedException {
         monitorUsers.anadirUsuario(id, entrada, salida);
         for(String archivo : elems)
             monitorArchivos.anadirArchivo(id, archivo);
     }
 
-    public synchronized void eliminarUsuario(String id,Set<String> elems){
+    public void anadirInfo(String Id, String fichero)throws InterruptedException{
+        monitorArchivos.anadirArchivo(Id, fichero);
+    }
+
+    public void eliminarUsuario(String id,String[] elems) throws InterruptedException {
         monitorUsers.eliminarUsuario(id);
         for(String archivo : elems)
             monitorArchivos.eliminarArchivo(id, archivo);
     }
 
-    public synchronized ArrayList<String> getInfo(){
+    public ArrayList<String> getInfo() throws InterruptedException {
         return monitorArchivos.getInfo();
     }
 
-    public synchronized Pair<ObjectInputStream, ObjectOutputStream> getUsuario(String fichero) throws RuntimeException{//TODO cuidado
+
+    public Pair<String,Pair<ObjectInputStream, ObjectOutputStream>> getUsuario(String fichero) throws RuntimeException, InterruptedException {//TODO cuidado
         ArrayList<String> idUsuarios = monitorArchivos.getUsuarios(fichero);
         if(idUsuarios.size() == 0)
             throw new RuntimeException("No hay usuarios que tengan el archivo");
         else
-            return monitorUsers.getUsuarios(idUsuarios.get(0));
+            return (new Pair<>(idUsuarios.get(0), getUsuarioPorId(idUsuarios.get(0))));
     }
 
-    public synchronized Pair<ObjectInputStream, ObjectOutputStream> getUsuarioPorId(String id) throws RuntimeException{
+    public Pair<ObjectInputStream, ObjectOutputStream> getUsuarioPorId(String id) throws RuntimeException{
         try{
             return monitorUsers.getUsuarioPorId(id);
         }

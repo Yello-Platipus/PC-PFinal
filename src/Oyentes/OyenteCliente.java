@@ -46,7 +46,7 @@ public class OyenteCliente extends Thread {
                             break;
                         case PEDIR_FICHERO:
                             MensajePedirFichero aux1 = (MensajePedirFichero) men;
-                            Pair<ObjectInputStream, ObjectOutputStream> par = null;
+                            Pair<String, Pair<ObjectInputStream, ObjectOutputStream>> par = null;
                             try {
                                 par = se.getUsuario(aux1.getFichero());//1- Buscar al cliente con lo que pide el cliente 1
                             }
@@ -56,7 +56,7 @@ public class OyenteCliente extends Thread {
                             }
                             //2- Con el in y el out de ese cliente 2 encontrado
                             //TODO No es aux1.getOrigen() es cliente 2, hacer funcion en server que de el cliente 2
-                            par.getValue().writeObject(new MensajeEmitirFichero(aux1.getDestino(),aux1.getOrigen(),aux1.getFichero(),aux1.getOrigen()));//3- Enviarle un mensaje de tipo "PedirSocket" con el socket del cliente 2
+                            par.getValue().getValue().writeObject(new MensajeEmitirFichero(aux1.getDestino(),par.getKey(),aux1.getFichero(),aux1.getOrigen()));//3- Enviarle un mensaje de tipo "PedirSocket" con el socket del cliente 2
 
                             break;
                         case OK_EMITIR_FICHERO:
@@ -70,6 +70,11 @@ public class OyenteCliente extends Thread {
                                 break;
                             }
                             parAux.getValue().writeObject(aux3);//5- Enviar el mensaje de tipo "DevolverSocket" al cliente 1
+                            break;
+                        case ACTUALIZAR:
+                            MensajeActualizar aux4 = (MensajeActualizar) men;
+                            se.anadirInfo(aux4.getOrigen(),aux4.getFichero());
+                            break;
                         case CERRAR_CONEXION:
                             MensajeCerrarConexion aux2 = (MensajeCerrarConexion) men;
                             se.eliminarUsuario(aux2.getId(),aux2.getInfo());
@@ -85,7 +90,7 @@ public class OyenteCliente extends Thread {
                 System.out.println("Mensaje recibido incorrecto (no fue de entablar conexion)");
             }
         }
-        catch (IOException | ClassNotFoundException e) {
+        catch (IOException | InterruptedException| ClassNotFoundException e) {
             e.printStackTrace();
         }
 

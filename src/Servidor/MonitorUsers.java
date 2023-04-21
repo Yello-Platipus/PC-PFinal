@@ -8,32 +8,39 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Semaphore;
 
 
 public class MonitorUsers {
+    Semaphore semaforo;
     private Map<String, Pair<ObjectInputStream, ObjectOutputStream>> entradaSalidaUsers;
 
     public MonitorUsers() {
         entradaSalidaUsers = new HashMap<>();
-
+        semaforo = new Semaphore(1);
     }
 
-    public synchronized void anadirUsuario(String id, ObjectInputStream entrada, ObjectOutputStream salida){
+    public void anadirUsuario(String id, ObjectInputStream entrada, ObjectOutputStream salida) throws InterruptedException {
+        semaforo.acquire();
         entradaSalidaUsers.put(id, new Pair<>(entrada, salida));
+        semaforo.release();
     }
 
-    public synchronized void eliminarUsuario(String id){
+    public void eliminarUsuario(String id) throws InterruptedException {
+        semaforo.acquire();
         entradaSalidaUsers.remove(id);
+        semaforo.release();
     }
 
-    public synchronized Pair<ObjectInputStream, ObjectOutputStream>  getUsuarios(String id){
-        return entradaSalidaUsers.get(id);
-    }
-
-    public synchronized Pair<ObjectInputStream, ObjectOutputStream> getUsuarioPorId(String id) throws RuntimeException{
+    public synchronized Pair<ObjectInputStream, ObjectOutputStream> getUsuarioPorId(String id) throws RuntimeException, InterruptedException {
+        semaforo.acquire();
         if(!entradaSalidaUsers.containsKey(id))
             throw new RuntimeException();
-        else
-            return entradaSalidaUsers.get(id);
+        else{
+            Pair<ObjectInputStream, ObjectOutputStream>  usuarios = entradaSalidaUsers.get(id);
+            semaforo.release();
+            return usuarios;
+        }
+
     }
 }

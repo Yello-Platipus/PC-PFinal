@@ -5,9 +5,9 @@ import java.util.Set;
 public class MensajeCerrarConexion extends Mensaje{
 
     private String id;
-    private Set<String> info;
+    private String[] info;
 
-    public MensajeCerrarConexion(String origen, String destino, String id, Set<String> info) {
+    public MensajeCerrarConexion(String origen, String destino, String id, String [] info) {
         super(origen, destino,TiposMensajes.CERRAR_CONEXION);
         this.id = id;
         this.info = info;
@@ -18,7 +18,7 @@ public class MensajeCerrarConexion extends Mensaje{
         return id;
     }
 
-    public Set<String> getInfo(){
+    public String[] getInfo(){
         return info;
     }
 }

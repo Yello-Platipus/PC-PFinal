@@ -1,17 +1,14 @@
 package Cliente;
 
 import java.io.*;
-import java.net.InetAddress;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Set;
 
 import GUI.MainWindowCliente;
+import Mensaje.MensajeCerrarConexion;
 import Mensaje.MensajePedirConexion;
 import Mensaje.MensajePedirFichero;
 import Mensaje.MensajePedirListaUsuarios;
-import Oyentes.OyenteCliente;
 import Oyentes.OyenteServidor;
 import Servidor.Servidor;
 
@@ -65,6 +62,22 @@ public class Cliente {
 
     public void enviarPedirFichero(String fichero) throws IOException {
         objetoOut.writeObject(new MensajePedirFichero(getId(),"Servidor",fichero));
+    }
+
+    public void actualizarListaUsuarios(){
+
+        usuario.actualizarInfo();
+
+    }
+
+    public void cerrarSesion() throws IOException {
+        String[] matriz = new String[usuario.getInfo().size()];
+        int i = 0;
+        for (String cadena : usuario.getInfo()) {
+            matriz[i] = cadena;
+            i++;
+        }
+        objetoOut.writeObject(new MensajeCerrarConexion(getId(),"Servidor", usuario.getId(), matriz));
     }
 
 

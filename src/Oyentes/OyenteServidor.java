@@ -50,7 +50,9 @@ public class OyenteServidor extends Thread {
                             MensajeOkEmitirFichero aux3 = (MensajeOkEmitirFichero) men;
                             int puerto = aux3.getPuerto();
                             String ip = aux3.getIp();
-                            new ClienteReceptor(cliente,ip,puerto,aux3.getFichero()).start();
+                            new ClienteReceptor(cliente,ip,puerto,aux3.getFichero(),out).start();
+
+                            break;
 
                         default://TODO MENSAJE ERROR?
                             System.out.println("Mensaje no reconocido");

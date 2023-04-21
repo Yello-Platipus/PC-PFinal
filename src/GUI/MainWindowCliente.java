@@ -7,6 +7,7 @@ import Util.GeneradorPuertos;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.net.InetAddress;
@@ -55,6 +56,7 @@ public class MainWindowCliente extends JFrame {
         this.add(conectar);
 
         this.setVisible(true);
+
     }
 
     public MainWindowCliente(Cliente c){
@@ -86,6 +88,7 @@ public class MainWindowCliente extends JFrame {
         this.add(pedirListaFicheros);
 
         this.setVisible(true);
+
     }
 
     public MainWindowCliente(Cliente c, ArrayList<String> ficheros){
@@ -122,6 +125,15 @@ public class MainWindowCliente extends JFrame {
         this.add(listaFicheros);
         anadirPedirFichero(listaFicheros);
         this.setVisible(true);
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                try {
+                    cliente.cerrarSesion();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public void anadirPedirFichero(JComboBox<String> listaFicheros){

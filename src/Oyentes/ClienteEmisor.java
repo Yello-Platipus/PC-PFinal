@@ -49,6 +49,8 @@ public class ClienteEmisor extends Thread {
             archivo.close();
             out.close();
             socket.close();
+            serverSocket.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,11 +1,12 @@
 package Cliente;
 
 import java.io.File;
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Usuario {
+public class Usuario implements Serializable {
     public final static String ruta = "data/";
     private String id;
     private static InetAddress ip;
@@ -38,6 +39,18 @@ public class Usuario {
     public String getId() {
         return id;
     }
+
+    public synchronized void actualizarInfo(){
+        info.clear();
+        File carpeta = new File(ruta + id);
+        if (!carpeta.exists())
+            carpeta.mkdir();
+        else
+            for (File archivo : carpeta.listFiles())
+                if (archivo.isFile())
+                    info.add(archivo.getName());
+    }
+
     public InetAddress getIp() {
         return ip;
     }
