@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Set;
 
+import Cliente.Locks.LockTicket;
 import GUI.MainWindowCliente;
 import Mensaje.MensajeCerrarConexion;
 import Mensaje.MensajePedirConexion;
@@ -19,6 +20,7 @@ public class Cliente {
     private OutputStream out;
     private ObjectOutputStream objetoOut;
     private ObjectInputStream objetoIn;
+    private LockTicket lock;
 
     public Cliente(Usuario usuario) {
         this.usuario = usuario;
@@ -26,6 +28,7 @@ public class Cliente {
             this.socket = null;
             in = null;
             out = null;
+            lock = new LockTicket();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -65,18 +68,20 @@ public class Cliente {
     }
 
     public void actualizarListaUsuarios(){
-
+        lock.lock();
         usuario.actualizarInfo();
-
+        lock.unlock();
     }
 
     public void cerrarSesion() throws IOException {
+        lock.lock();
         String[] matriz = new String[usuario.getInfo().size()];
         int i = 0;
         for (String cadena : usuario.getInfo()) {
             matriz[i] = cadena;
             i++;
         }
+        lock.unlock();
         objetoOut.writeObject(new MensajeCerrarConexion(getId(),"Servidor", usuario.getId(), matriz));
     }
 
