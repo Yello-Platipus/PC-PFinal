@@ -50,7 +50,6 @@ public class ClienteEmisor extends Thread {
             out.close();
             socket.close();
             serverSocket.close();
-
         } catch (IOException e) {
             e.printStackTrace();
         }

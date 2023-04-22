@@ -86,6 +86,15 @@ public class MainWindowCliente extends JFrame {
             }
         });
         this.add(pedirListaFicheros);
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                try {
+                    cliente.cerrarSesion();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         this.setVisible(true);
 
