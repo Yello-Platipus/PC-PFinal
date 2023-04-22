@@ -83,12 +83,14 @@ public class Cliente {
         }
         lock.unlock();
         objetoOut.writeObject(new MensajeCerrarConexion(getId(),"Servidor", usuario.getId(), matriz));
+        objetoOut.close();
+        objetoIn.close();
+        socket.close();
+        out.close();
+        in.close();
     }
-
-
 
     public String getIp(){
         return usuario.getIp().getHostAddress();
     }
-
 }
