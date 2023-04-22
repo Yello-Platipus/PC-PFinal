@@ -13,7 +13,7 @@ public class MonitorArchivos {
         semaforo = new Semaphore(1);
     }
 
-    public synchronized void anadirArchivo(String id, String archivo) throws InterruptedException {
+    public void anadirArchivo(String id, String archivo) throws InterruptedException {
         semaforo.acquire();
         if(!quienTiene.containsKey(archivo))
             quienTiene.put(archivo, new ArrayList<>());
@@ -21,7 +21,7 @@ public class MonitorArchivos {
         semaforo.release();
     }
 
-    public synchronized void eliminarArchivo(String id, String archivo) throws InterruptedException {
+    public void eliminarArchivo(String id, String archivo) throws InterruptedException {
         semaforo.acquire();
         quienTiene.get(archivo).remove(id);
         if(quienTiene.get(archivo).isEmpty())
@@ -37,7 +37,7 @@ public class MonitorArchivos {
     }
 
 
-    public synchronized ArrayList<String> getInfo() throws InterruptedException {
+    public ArrayList<String> getInfo() throws InterruptedException {
         semaforo.acquire();
         ArrayList<String> info = new ArrayList<>();
         for(String archivo : quienTiene.keySet()){
