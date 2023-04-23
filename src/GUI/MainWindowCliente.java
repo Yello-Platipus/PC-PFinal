@@ -16,9 +16,11 @@ import java.util.ArrayList;
 
 public class MainWindowCliente extends JFrame {
 
-    private JTextField nombreUsuario;
     private Cliente cliente;
     private ArrayList<String> ficheros;
+
+    private PanelInicioSesion panelInicioSesion;
+    private PanelClienteConectado panelCliente;
 
     public MainWindowCliente() {
         super();
@@ -28,13 +30,8 @@ public class MainWindowCliente extends JFrame {
         this.setLocationRelativeTo(null);
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 
-        JLabel m = new JLabel("Introduzca su nombre de usuario:");
-        this.add(m);
-        nombreUsuario = new JTextField(30);
-        nombreUsuario.setMaximumSize(new java.awt.Dimension(400, 50));
-        this.add(nombreUsuario);
-        JButton conectar = new JButton("Conectar");
-        conectar.addActionListener(new ActionListener() {
+        panelInicioSesion = new PanelInicioSesion();
+        panelInicioSesion.getBotonConectar().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String id = getNombreUsuario();
@@ -53,10 +50,9 @@ public class MainWindowCliente extends JFrame {
                 }
             }
         });
-        this.add(conectar);
+        this.add(panelInicioSesion);
 
         this.setVisible(true);
-
     }
 
     public MainWindowCliente(Cliente c){
@@ -68,24 +64,9 @@ public class MainWindowCliente extends JFrame {
         this.setLocationRelativeTo(null);
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 
-        JLabel m = new JLabel("Bienvenido " + cliente.getId());
-        this.add(m);
+        panelCliente = new PanelClienteConectado(cliente);
+        this.add(panelCliente);
 
-        JComboBox<String> listaFicheros;
-
-        JButton pedirListaFicheros = new JButton("Pedir lista de ficheros disponibles");
-        pedirListaFicheros.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    cliente.enviarPedirLista();
-                    dispose();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        });
-        this.add(pedirListaFicheros);
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
                 try {
@@ -110,29 +91,9 @@ public class MainWindowCliente extends JFrame {
         this.setLocationRelativeTo(null);
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 
-        JLabel m = new JLabel("Bienvenido " + cliente.getId());
-        this.add(m);
+        panelCliente = new PanelClienteConectado(cliente, ficheros);
+        this.add(panelCliente);
 
-        JComboBox<String> listaFicheros = new JComboBox<>();
-
-        JButton pedirListaFicheros = new JButton("Pedir lista de ficheros disponibles");
-        pedirListaFicheros.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    cliente.enviarPedirLista();
-                    dispose();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        });
-        this.add(pedirListaFicheros);
-
-        for(String fichero : this.ficheros)
-            listaFicheros.addItem(fichero);
-        this.add(listaFicheros);
-        anadirPedirFichero(listaFicheros);
         this.setVisible(true);
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
@@ -167,6 +128,6 @@ public class MainWindowCliente extends JFrame {
     }
 
     public String getNombreUsuario() {
-        return nombreUsuario.getText();
+        return panelInicioSesion.getNombreUsuario();
     }
 }
