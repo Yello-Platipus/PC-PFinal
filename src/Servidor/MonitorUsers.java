@@ -32,7 +32,7 @@ public class MonitorUsers {
         semaforo.release();
     }
 
-    public synchronized Pair<ObjectInputStream, ObjectOutputStream> getUsuarioPorId(String id) throws RuntimeException, InterruptedException {
+    public Pair<ObjectInputStream, ObjectOutputStream> getUsuarioPorId(String id) throws RuntimeException, InterruptedException {
         semaforo.acquire();
         if(!entradaSalidaUsers.containsKey(id))
             throw new RuntimeException();
