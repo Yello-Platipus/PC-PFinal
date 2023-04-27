@@ -78,6 +78,15 @@ public class MainWindowCliente extends JFrame {
         });
 
         this.setVisible(true);
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                try {
+                    cliente.cerrarSesion();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
     }
 
