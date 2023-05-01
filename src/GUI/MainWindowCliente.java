@@ -95,7 +95,6 @@ public class MainWindowCliente extends JFrame {
                 }
             }
         });
-
         this.setVisible(true);
 
     }
